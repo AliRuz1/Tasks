@@ -1,0 +1,15 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class Port {
+    public static int portCapacity = 100;
+    public static int berth = 5;
+
+    private List<Integer> piers = new ArrayList<Integer>();
+    List<Integer> list = new ArrayList<Integer>();
+
+    {
+        list.add(Integer.valueOf(0));
+        piers.add(Integer.valueOf(0));
+    }
+}
