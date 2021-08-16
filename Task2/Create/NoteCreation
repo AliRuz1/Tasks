@@ -1,0 +1,73 @@
+package Create;
+
+import Note.Note;
+
+public class NoteCreation {
+    private String topic;
+    private String creationDate;
+    private String email;
+    private String text;
+
+    public NoteCreation() {
+        this.topic = "";
+        this.creationDate = "";
+        this.email = "";
+        this.text = "";
+    }
+
+    public NoteCreation withTopic(String topic) {
+        this.topic = topic;
+        return this;
+    }
+
+    public NoteCreation withCreationDate(String creationDate) {
+        this.creationDate = creationDate;
+        return this;
+    }
+
+    public NoteCreation withEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
+    public NoteCreation withMessage(String text) {
+        this.text = text;
+        return this;
+    }
+
+    public Note build() {
+        return new Note(this);
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+}
