@@ -1,0 +1,48 @@
+package Users;
+
+public class Admin extends User {
+     protected Admin(String login, String password){
+         super(login,password);
+     }
+
+     public void changePassword(String oldPassword, String newPassword){
+         UserAuth.changePassword(oldPassword,newPassword);
+     }
+     
+     public void addDoc(String name, String faculty, int course, int yearOfEnrollment){
+         archive.addDoc(name, faculty, course, yearOfEnrollment);
+     }
+
+     public void removeDoc(int numOfDoc){
+         archive.removeDoc(numOfDoc);
+     }
+
+     public void removeIfNotEnrolled(){
+         archive.removeIfNotEnrolled();
+     }
+
+     public boolean chooseDoc(int numOfDoc){
+         return archive.chooseDoc(numOfDoc);
+     }
+
+     public void changeFaculty(String faculty){
+         archive.changeFaculty(faculty);
+     }
+
+     public boolean incCourse(){
+         return archive.incCourse();
+     }
+
+     public void changeCourse(int course){
+         archive.changeCourse(course);
+     }
+
+     public void sort(){
+         archive.sort();
+     }
+
+     @Override
+    public boolean isAdmin(){
+         return true;
+     }
+}
