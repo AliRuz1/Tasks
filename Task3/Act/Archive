@@ -1,0 +1,161 @@
+package Act;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+public class Archive {
+    private List<Doc> archive = new ArrayList<Doc>();
+
+    public void addDoc(String name, String faculty, int course, int yearOfEnrollment){
+        archive.add(new Doc(name,faculty,course,yearOfEnrollment));
+    }
+
+    public void removeDoc(int removeDoc){
+        Doc doc;
+        for(int i = 0; i < archive.size(); i++){
+            doc = archive.get(i);
+            if(doc.getNumofDoc() == removeDoc){
+                archive.remove(doc);
+            }
+        }
+    }
+
+    public void removeIfNotEnrolled(){ // удаление отчисленных и окончивших универ студентов
+        Doc doc;
+        for(int i = 0; i < archive.size(); i++){
+            doc = archive.get(i);
+            if(doc.getStatus() != StudentStatus.ENROLLED){
+                archive.remove(doc);
+            }
+        }
+    }
+
+    public boolean chooseDoc(int numOfDoc){
+        int id = -1;
+        for(int i = 0; i < archive.size(); i++){
+            if(archive.get(i).getNumofDoc() == numOfDoc){
+                id = i;
+                break;
+            }
+        }
+        if(id != -1){
+            archive.add(archive.size(), archive.get(id));
+            archive.remove(id);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void changeFaculty(String faculty){
+        if(archive.size() > 0){
+            archive.get(archive.size() - 1).changeFaculty(faculty);
+        }
+    }
+
+
+    public boolean incCourse(){
+        if(archive.size() > 0){
+            return archive.get(archive.size() - 1).incCourse();
+        } else {
+            return false;
+        }
+    }
+
+    public void changeCourse(int course){
+        if(archive.size() > 0){
+            archive.get(archive.size() - 1).changeCourse(course);
+        }
+    }
+
+    public void sort(){
+        Comparator<Doc> comparator = Comparator.comparing(Doc:: getStatus);
+        comparator.thenComparing(Doc:: getFaculty);
+        comparator.thenComparing(Doc:: getCourse);
+        comparator.thenComparing(Doc::getYearOfEnrollment);
+        comparator.thenComparing(Doc:: getName);
+        archive.sort(comparator);
+    }
+
+    public List<Doc> findDocByFaculty(String faculty){
+        List<Doc> founded = new ArrayList<>();
+        if(faculty != null && !faculty.isEmpty() && archive.size() > 0){
+            for(Doc doc : archive){
+                if(doc.getFaculty().equals(faculty)){
+                    founded.add(doc);
+                }
+            }
+        }
+        return founded;
+    }
+
+    public List<Doc> findDocByCourse(int course){
+        List<Doc> founded = new ArrayList<>();
+        if(archive.size() > 0){
+            for(Doc doc : archive){
+                if(doc.getCourse() == course){
+                    founded.add(doc);
+                }
+            }
+        }
+        return founded;
+    }
+
+    public List<Doc> findDocByYear(int year){ //поиск дел студентов по году их зачисления
+        List<Doc> founded = new ArrayList<>();
+        if(archive.size() > 0){
+            for(Doc doc : archive){
+                if(doc.getYearOfEnrollment() == year){
+                    founded.add(doc);
+                }
+            }
+        }
+        return founded;
+    }
+
+    @Override
+    public String toString(){
+        if(archive.size() > 0){
+            String string = new String();
+            for(int i = 0; i < archive.size(); i++){
+                string += archive.get(i).toString() + "\n";
+            }
+            return string;
+        } else{
+            return "Архив Пуст";
+        }
+    }
+    @Override
+    public boolean equals(Object obj){
+        if(obj == this){
+            return true;
+        }
+
+        if(obj==null || obj.getClass() != this.getClass()){
+            return false;
+        }
+
+        Archive other=(Archive) obj;
+
+        boolean isEqual=archive.size()==other.archive.size();
+
+        for(int i=0; isEqual && i<archive.size();i++){
+            if(!archive.get(i).equals(other.archive.get(i))){
+                isEqual=false;
+            }
+        }
+
+        return isEqual;
+    }
+
+    @Override
+    public int hashCode(){
+        final int prime=31;
+        int result=1;
+
+        result=prime*result+archive.hashCode();
+
+        return result;
+    }
+}
