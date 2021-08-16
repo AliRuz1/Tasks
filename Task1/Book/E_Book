@@ -1,0 +1,17 @@
+package Book;
+
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Scanner;
+
+
+public class E_Book extends Book {
+
+    URLConnection connection = new URL("http://loveread.ec/").openConnection();
+    Scanner scanner = new Scanner(connection.getInputStream());
+
+    public E_Book(String author, String book_Name, int page) throws IOException {
+        super(author, book_Name, page);
+    }
+}
