@@ -1,0 +1,144 @@
+package Possibility;
+
+import Storage.Storage;
+import Note.*;
+import Input.Input;
+import Create.NoteCreation;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class NotePossibilities {
+
+    public static boolean printNotes(ArrayList<Note> notes) {
+
+        if(notes.size() != 0) {
+            int page = 1;
+            int notesOnPage = 5;
+            int numberOfPages = notes.size() / notesOnPage + 1;
+            while (page > 0 && page <= numberOfPages) {
+                System.out.println("Page " + page + " from " + numberOfPages + ":");
+                int i = page * notesOnPage - notesOnPage;
+                for (; i < page * notesOnPage && i < notes.size(); i++) {
+                    System.out.print(i + 1 + " ");
+                    System.out.println(notes.get(i).toString());
+                }
+                System.out.print("Enter the page number or 0 to exit: ");
+                page = Input.checkPageNumber();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public static Note createNote() {
+        NoteCreation noteCreation = new NoteCreation();
+        System.out.println("Enter the subject of the note: ");
+        noteCreation.setTopic(Input.checkInputSubject());
+        System.out.println("Enter the date when the note was created: ");
+        noteCreation.setCreationDate(Input.checkInputDate());
+        System.out.println("Enter the email address of the creator: ");
+        noteCreation.setEmail(Input.checkInputEmail());
+        System.out.println("Enter the contents of the note: ");
+        noteCreation.setText(Input.checkInputText());
+        return noteCreation.build();
+    }
+
+    public static boolean addNote(NoteList noteList) {
+        Note note = createNote();
+        if (!noteList.getNotes().contains(note)) {
+            noteList.getNotes().add(note);
+            Storage.saveNotes(noteList.getNotes());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean findNotes(NoteList noteList) {
+        ArrayList<Note> notes = null;
+        System.out.println("Enter 1 to search for notes on the topic\n"
+                + "Enter 2 to search for notes by date\n"
+                + "Enter 3 to search for notes by mail\n"
+                + "Enter 4 to search for notes by a specific word\n"
+                + "Enter 5 to search for notes by topic and mail\n");
+        int choise = Input.checkInputChoice();
+        if (choise == 1) {
+            System.out.println("Enter a subject: ");
+            notes = findNotesBySubject(noteList.getNotes(), Input.checkInputSubject());
+        } else if (choise == 2) {
+            System.out.println("Enter the date: ");
+            notes = findNotesByDate(noteList.getNotes(), Input.checkInputDate());
+        } else if (choise == 3) {
+            System.out.println("Enter your email address: ");
+            notes = findNotesByEmail(noteList.getNotes(), Input.checkInputDate());
+        } else if (choise == 4) {
+            System.out.println("Enter the word: ");
+            notes = findNotesByWordInMessage(noteList.getNotes(), Input.checkInputSubject());
+        } else if (choise == 5) {
+            System.out.println("Enter a subject: ");
+            notes = findNotesBySubject(noteList.getNotes(), Input.checkInputSubject());
+            System.out.println("Enter your email address: ");
+            notes = findNotesByEmail(notes, Input.checkInputEmail());
+        } else {
+            return false;
+        }
+        if (notes.size() == 0) {
+            System.out.println("Notes not found");
+        } else {
+            System.out.println("Found notes: ");
+            printNotes(notes);
+        }
+        return true;
+    }
+
+    private static ArrayList<Note> findNotesBySubject(ArrayList<Note> notes, String subject) {
+        ArrayList<Note> findedNotes = new ArrayList<Note>();
+        for (Note note : notes) {
+            if (note.getTopic().equalsIgnoreCase(subject)) {
+                findedNotes.add(note);
+            }
+        }
+        return findedNotes;
+    }
+
+    private static ArrayList<Note> findNotesByDate(ArrayList<Note> notes, String date) {
+        ArrayList<Note> findedNotes = new ArrayList<Note>();
+        for (Note note : notes) {
+            if (note.getCreationDate().equalsIgnoreCase(date)) {
+                findedNotes.add(note);
+            }
+        }
+        sortNotesBySubject(notes);
+        return findedNotes;
+    }
+
+    public static ArrayList<Note> findNotesByEmail(ArrayList<Note> notes, String email) {
+        ArrayList<Note> findedNotes = new ArrayList<Note>();
+        for (Note note : notes) {
+            if (note.getEmail().equalsIgnoreCase(email)) {
+                findedNotes.add(note);
+            }
+        }
+        sortNotesBySubject(notes);
+        return findedNotes;
+    }
+
+    public static ArrayList<Note> findNotesByWordInMessage(ArrayList<Note> notes, String word) {
+        ArrayList<Note> findedNotes = new ArrayList<Note>();
+        Pattern pattern = Pattern.compile(word);
+        for (Note note : notes) {
+            Matcher matcher = pattern.matcher(note.getTopic());
+            if (matcher.find()) {
+                findedNotes.add(note);
+            }
+        }
+        sortNotesBySubject(notes);
+        return findedNotes;
+    }
+
+    private static void sortNotesBySubject(ArrayList<Note> notes) {
+        notes.sort(Comparator.comparing(Note::getTopic));
+    }
+}
