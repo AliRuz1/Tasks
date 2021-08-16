@@ -1,0 +1,58 @@
+package Act;
+
+import Note.*;
+import Input.Input;
+import Possibility.NotePossibilities;
+import Storage.Storage;
+
+public class Menu {
+
+    private static NoteList noteList = null;
+
+    public static void start() {
+        noteList = new NoteList();
+        noteList.setNotes(Storage.loadNotes());
+        System.out.println("Welcome to notepad");
+        while (true) {
+            System.out.println(getMainOptions());
+            int option = Input.checkInputMainChoice();
+            if (option != 0) {
+                performOperation(option);
+            } else {
+                Storage.saveNotes(noteList.getNotes());
+                return;
+            }
+        }
+    }
+
+    private static String getMainOptions() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\nAvailable options\n").append("1. Output notes.\n");
+        sb.append("2. Find notes by parameters in sorted form.\n");
+        sb.append("3. Add a note\n");
+        sb.append("0. Finish\n");
+        return sb.toString();
+    }
+
+    private static void performOperation(int option) {
+        switch (option) {
+            case 1:
+                if (NotePossibilities.printNotes(noteList.getNotes())){
+                    System.out.println("There are no notes.\n");
+                }
+                break;
+            case 2:
+                while (!NotePossibilities.findNotes(noteList)) {
+                    System.out.println("Error, repeat again.");
+                }
+                break;
+            case 3:
+                if (NotePossibilities.addNote(noteList)) {
+                    System.out.println("The note was successfully added.");
+                } else {
+                    System.out.println("The note is already in the database.\n");
+                }
+                break;
+        }
+    }
+}
