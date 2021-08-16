@@ -1,0 +1,44 @@
+public class ShipInPort {
+    private static Choise c1;
+    private static Choise c2;
+    private static Choise c4;
+    private static Choise c5;
+    private static Choise c3;
+
+    public static void main(String args[]) {
+        System.out.println("Start");
+        setC1(Choise.createAndStart("Ship 1"));
+        setC2(Choise.createAndStart("Ship 2"));
+        setC3(Choise.createAndStart("Ship 3"));
+        setC4(Choise.createAndStart("Ship 4"));
+        setC5(Choise.createAndStart("Ship 5"));
+
+        for (int i = 0; i < 50; i++) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException exc) {
+                System.out.println("Main thread interrupted.");
+            }
+        }
+    }
+
+    public static void setC1(Choise c1) {
+        ShipInPort.c1 = c1;
+    }
+
+    public static void setC2(Choise c2) {
+        ShipInPort.c2 = c2;
+    }
+
+    public static void setC4(Choise c4) {
+        ShipInPort.c4 = c4;
+    }
+
+    public static void setC5(Choise c5) {
+        ShipInPort.c5 = c5;
+    }
+
+    public static void setC3(Choise c3) {
+        ShipInPort.c3 = c3;
+    }
+}
