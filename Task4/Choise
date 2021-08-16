@@ -1,0 +1,84 @@
+public class Choise implements Runnable{
+    Thread thread;
+    static int current = 0;
+
+    Port port = new Port();
+    static int berthIs = 1;
+
+    Choise(String name){
+        thread = new Thread(this, name);
+    }
+
+    public static Choise createAndStart(String name){
+        Choise myThread = new Choise(name);
+        myThread.thread.start();
+        return myThread;
+    }
+
+    synchronized public void run(){
+        System.out.println(thread.getName() + " Moving to port");
+        try{
+            for(int count = 0; count < 10; count++) {
+                Ship ship = new Ship();
+
+                while ((this.berthIs >= this.port.berth || current >= this.port.portCapacity)) {
+                    System.out.println(thread.getName() + " entered the port and waiting in que");
+                    if (ship.bool) {
+                        System.out.println(" Full\n");
+                    } else {
+                        System.out.println(" Empty\n");
+                    }
+                }
+                Thread.sleep(100 + (int) (Math.random() * ((100 - 50) + 1)));
+
+
+                Thread.sleep(50 + (int) (Math.random() * ((100 - 50) + 1)));
+
+                if (this.berthIs < (this.port.berth) && current < Port.portCapacity && ship.bool){
+                    System.out.println(thread.getName() + " entered the port and started to unload at the pier №" + (this.berthIs));
+                    int berth = this.berthIs;
+                    this.berthIs++;
+                    current += ship.capacity;
+
+                    Thread.sleep(50 + (int)(Math.random()* ((100-50) + 1)));
+                    System.out.println(thread.getName() + " finished unloading at the pier №" + berth + "\nIn berth " + current + " containers");
+
+                    Thread.sleep(50 + (int)(Math.random()* ((100-50) + 1)));
+                    System.out.println(thread.getName() + " finished unloading at the pier № " + berth + "\nIn port " + current + " containers");
+
+                    Thread.sleep(50 + (int)(Math.random()*((100-50) + 1)));
+                    System.out.println(thread.getName() + " Out of port");
+                    this.berthIs--;
+                }
+
+                while ((this.berthIs >= this.port.berth || current >= this.port.portCapacity)){
+                    System.out.println(thread.getName() + " entered the port and waiting in line ");
+
+                    if(ship.bool){
+                        System.out.println("The hold is full\n");
+                    } else{
+                        System.out.println("The hold is empty\n");
+                    }
+                    Thread.sleep(100 + (int)(Math.random()*((100-50) + 1)));
+                }
+                if(this.berthIs < port.berth && current > 10 && ship.capacity == 0){
+                    System.out.println(thread.getName() + " entered the port and started loading at the pier № " + (this.berthIs));
+
+                    int berth = this.berthIs;
+                    this.berthIs++;
+                    current -= 10;
+
+                    Thread.sleep(50 + (int)(Math.random()*((100-50) + 1)));
+                    System.out.println(thread.getName() + " finished loading at the berth № " + berth + "\nIn port" + current + "current");
+
+                    Thread.sleep(50 + (int)(Math.random() * ((100-50) + 1)));
+                    System.out.println(thread.getName() + " Out of port ");
+                    this.berthIs--;
+
+                }
+            }
+        }catch (InterruptedException e){
+            System.out.println(thread.getName() + "start error");
+        }
+    }
+}
