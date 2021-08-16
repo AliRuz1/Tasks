@@ -1,0 +1,85 @@
+package Book;
+
+public class Book {
+    private String book_Name;
+    private String author;
+    private int page;
+    private String book_Description;
+
+    public Book(String author,String book_Name,int page){
+        setPage(page);
+        setBook_Name(book_Name);
+        setAuthor(author);
+        book_Description= author + " - "+ book_Name +" - "+ page+" page\n";
+    }
+
+    public void setBook_Name(String book_Name){
+        if(book_Name!=null && !book_Name.isEmpty()){
+            this.book_Name = book_Name;
+        }
+    }
+
+    public void setAuthor(String author){
+        if(author!=null && !author.isEmpty()){
+            this.author=author;
+        }
+    }
+
+    public void setPage(int page){
+        if(page>0){
+            this.page = page ;
+        }
+    }
+
+    public void addBook_Description(String book_Description) {
+        if(book_Description!=null && !book_Description.isEmpty()) {
+            this.book_Description += book_Description+"\n";
+        }
+    }
+
+    public String getBook_Name(){
+        return book_Name;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public String getBook_Description() {
+        return book_Description;
+    }
+
+    @Override
+    public String toString(){
+        return String.format("%s %s %s",author,book_Name,Integer.toString(page));
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if(obj == this){
+            return true;
+        }
+
+        if(obj==null || !(obj instanceof Book)){
+            return false;
+        }
+
+        Book other=(Book) obj;
+
+        return book_Name.equals(other.book_Name) && author.equals(other.author) && page==other.page;
+    }
+
+    @Override
+    public int hashCode(){
+        final int prime=31;
+        int result=1;
+        result=prime*result+((book_Name==null)?0:book_Name.hashCode());
+        result=prime*result+((author==null)?0:author.hashCode());
+        result=prime*result+page;
+        return result;
+    }
+}
