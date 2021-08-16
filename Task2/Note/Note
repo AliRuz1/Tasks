@@ -1,0 +1,82 @@
+package Note;
+
+import Create.NoteCreation;
+
+public class Note {
+    private String topic;
+    private String creationDate;
+    private String email;
+    private String text;
+
+
+    public Note(NoteCreation noteCreation){
+        this.topic = noteCreation.getTopic();
+        this.creationDate = noteCreation.getCreationDate();
+        this.email = noteCreation.getEmail();
+        this.text = noteCreation.getText();
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getText(){
+        return text;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Topic: %s\n" + "Date of creation: %s\n" + "Mail: %s\n" + "Text: %s\n", topic, creationDate, email, text);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
+        result = prime * result + ((email == null) ? 0 : email.hashCode());
+        result = prime * result + ((text == null) ? 0 : text.hashCode());
+        result = prime * result + ((topic == null) ? 0 : topic.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Note other = (Note) obj;
+        if (creationDate == null) {
+            if (other.creationDate != null)
+                return false;
+        } else if (!creationDate.equals(other.creationDate))
+            return false;
+        if (email == null) {
+            if (other.email != null)
+                return false;
+        } else if (!email.equals(other.email))
+            return false;
+        if (text == null) {
+            if (other.text != null)
+                return false;
+        } else if (!text.equals(other.text))
+            return false;
+        if (topic == null) {
+            if (other.topic != null)
+                return false;
+        } else if (!topic.equals(other.topic))
+            return false;
+        return true;
+    }
+}
