@@ -1,0 +1,49 @@
+package User;
+
+import Book.*;
+import java.util.*;
+
+public class Admin extends User {
+    public Admin(String login, String password){
+        super(login,password);
+    }
+
+    public void changePassword(String oldPassword,String newPassword){
+        UserPas.changePassword(oldPassword, newPassword);
+    }
+
+    public void addBook(Book book){
+        catalog.addBook(book);
+    }
+
+    public void addBook(String author,String book_Name,int page){
+        catalog.addBook(author, book_Name, page);
+    }
+
+    public void removeAll(Book book){
+        catalog.removeAll(book);
+    }
+
+    public void setBook_Description(int bookNum,String description){
+        catalog.setBook_Description(bookNum, description);
+    }
+
+    @Override
+    public void checkMail(){
+        if(adminEmail!=null && !adminEmail.isEmpty() && !adminEmail.equals(" ")){
+            Scanner scanner=new Scanner(adminEmail);
+            try{
+                addBook(scanner.next(),scanner.next(),scanner.nextInt());
+                System.out.println("Suggested of user books");
+                adminEmail=" ";
+            }catch (InputMismatchException ex){
+                System.out.println("There are nothing good here");
+            }
+        }
+    }
+
+    @Override
+    public boolean isAdmin(){
+        return true;
+    }
+}
