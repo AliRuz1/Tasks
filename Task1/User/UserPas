@@ -1,0 +1,20 @@
+package User;
+
+public class UserPas {
+
+    private static String password="1111";
+
+    public User getUser(String pas,String login){
+        if(password.equals(pas)){
+            return new Admin(login,pas);
+        }else{
+            return new User(login,pas);
+        }
+    }
+
+    protected static void changePassword(String oldPassword,String newPassword){
+        if(oldPassword.equals(password) && newPassword!=null && !newPassword.isEmpty()){
+            password=newPassword;
+        }
+    }
+}
