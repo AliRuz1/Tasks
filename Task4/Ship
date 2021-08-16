@@ -1,0 +1,16 @@
+import java.util.Random;
+
+public class Ship {
+    Random random = new Random();
+    public int capacity;
+    public boolean bool = false;
+
+    public Ship(){
+        this.bool = random.nextBoolean();
+        if(this.bool){
+            capacity = 10;
+        } else{
+            capacity = 0;
+        }
+    }
+}
