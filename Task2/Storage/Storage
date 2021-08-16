@@ -1,0 +1,47 @@
+package Storage;
+
+import Create.NoteCreation;
+import Note.Note;
+
+import java.io.*;
+import java.util.ArrayList;
+
+public class Storage {
+    private static String notesFile = "resources\\notes.txt";
+
+    public static ArrayList<Note> loadNotes() {
+        String line;
+        String splitBy = ",";
+        ArrayList<Note> notes = new ArrayList<Note>();
+        try (BufferedReader br = new BufferedReader(new FileReader(notesFile))) {
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(splitBy);
+                Note note = new NoteCreation().withTopic(data[0]).withCreationDate(data[1]).withEmail(data[2]).withMessage(data[3]).build();
+                notes.add(note);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return notes;
+    }
+
+    public static void saveNotes(ArrayList<Note> notes) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(notesFile))) {
+            for (Note note : notes) {
+                StringBuilder sb = new StringBuilder();
+                sb.append(note.getTopic());
+                sb.append(",");
+                sb.append(note.getCreationDate());
+                sb.append(",");
+                sb.append(note.getEmail());
+                sb.append(",");
+                sb.append(note.getText());
+                bw.write(sb.toString());
+                bw.newLine();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
